@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Altin | Agents</title>
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <script defer src="/assets/js/agents.js"></script>
+</head>
+<body class="app-page">
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="brand-block">
+                <div class="brand-name">Altin</div>
+                <div class="brand-subtitle">Management console</div>
+            </div>
+
+            <div class="sidebar-section">
+                <nav class="nav-list" aria-label="Primary">
+                    <a class="nav-item" href="/index.html">
+                        <span>Overview</span>
+                    </a>
+                    <a class="nav-item is-active" href="/agents.html">
+                        <span>Agents</span>
+                    </a>
+                    <a class="nav-item" href="/keys.html">
+                        <span>Keys</span>
+                    </a>
+                    <a class="nav-item" href="/users.html">
+                        <span>Users</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-info">
+                    <strong>Session</strong><br>
+                    <span id="serverChip">loading…</span>
+                </div>
+                <button class="button-secondary" id="themeToggle" type="button">Theme</button>
+                <button class="button" id="logoutButton" type="button">Logout</button>
+            </div>
+        </aside>
+
+        <main class="main-shell">
+            <header class="page-header page-header-spaced">
+                <div>
+                    <div class="page-title">Agents</div>
+                    <div class="page-error" id="pageError" role="status" aria-live="polite"></div>
+                </div>
+                <div class="topbar-actions">
+                    <!-- Matches keys.html and users.html: a .button-secondary Refresh
+                         first in .topbar-actions. Selection and bulk tasking stay in
+                         the "Selected agents" bar below. -->
+                    <button class="button-secondary" id="refreshAgentsButton" type="button">Refresh</button>
+                </div>
+            </header>
+
+            <section class="page-section">
+                <section class="agents-toolbar panel">
+                    <div class="filter-grid">
+                        <div>
+                            <label class="field-label" for="agentSearch">Search</label>
+                            <input class="input" id="agentSearch" type="search" placeholder="ID, IP, or Tag">
+                        </div>
+                        <div>
+                            <label class="field-label" for="implantFilter">Implant type</label>
+                            <select class="select" id="implantFilter">
+                                <option value="all">All implant types</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="field-label" for="osFilter">OS</label>
+                            <select class="select" id="osFilter">
+                                <option value="all">All operating systems</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="selection-bar">
+                        <div>
+                            <span class="selection-label">Selected agents</span>
+                            <div class="selection-count" id="selectionCount">0 selected</div>
+                        </div>
+                        <div class="selection-actions">
+                            <button class="button-secondary" id="selectFilteredButton" type="button">Select filtered</button>
+                            <button class="button-secondary" id="clearSelectionButton" type="button">Clear</button>
+                            <button class="button" id="openBulkTaskButton" type="button">Bulk tasking</button>
+                        </div>
+                    </div>
+                    <div class="selection-chips" id="selectionChips"></div>
+                </section>
+
+                <section class="panel agents-table-panel">
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th class="table-check"><span class="sr-only">Select</span></th>
+                                    <th>IP</th>
+                                    <th>Implant</th>
+                                    <th>OS</th>
+                                    <th>Tags</th>
+                                    <th>Last check-in</th>
+                                    <th>Commands</th>
+                                    <th class="table-actions-cell">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="agentsTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal-backdrop hidden" id="interactModal" aria-hidden="true">
+        <div class="modal-card card modal-card-wide" role="dialog" aria-modal="true" aria-labelledby="interactTitle">
+            <div class="modal-header">
+                <div class="modal-title-row">
+                    <h2 id="interactTitle">Interact</h2>
+                    <p id="interactSubtitle">Loading agent…</p>
+                </div>
+                <button class="icon-button" id="closeInteractButton" type="button">✕</button>
+            </div>
+
+            <div class="console-status-bar">
+                <span class="console-agent-chip" id="interactAgentChip">—</span>
+                <span class="console-hint" id="interactHint">Pick a command and send it to this agent.</span>
+            </div>
+
+            <div class="console-log" id="interactLog" role="log" aria-live="polite" aria-label="Command output"></div>
+
+            <div class="console-composer">
+                <div class="console-command-row">
+                    <div>
+                        <label class="field-label" for="interactCommand">Command</label>
+                        <select class="select" id="interactCommand"></select>
+                    </div>
+                    <div class="console-command-help" id="interactCommandHelp"></div>
+                </div>
+                <div id="interactArgsContainer"></div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="modal-message" id="interactMessage"></div>
+                <div class="modal-actions-inline">
+                    <button class="button-secondary" id="clearInteractButton" type="button">Clear console</button>
+                    <button class="button-secondary" id="cancelInteractButton" type="button">Close</button>
+                    <button class="button" id="sendInteractButton" type="button">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop hidden" id="historyModal" aria-hidden="true">
+        <div class="modal-card card modal-card-wide" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
+            <div class="modal-header">
+                <div class="modal-title-row">
+                    <h2 id="historyTitle">Command history</h2>
+                    <p id="historySubtitle">Loading…</p>
+                </div>
+                <button class="icon-button" id="closeHistoryButton" type="button">✕</button>
+            </div>
+
+            <div class="history-toolbar">
+                <div class="history-search">
+                    <label class="field-label" for="historySearch">Filter</label>
+                    <input class="input" id="historySearch" type="search" placeholder="Command name or argument" autocomplete="off">
+                </div>
+                <div class="history-summary" id="historySummary" role="status" aria-live="polite">—</div>
+            </div>
+
+            <div class="history-list" id="historyList"></div>
+
+            <div class="modal-footer">
+                <div class="modal-message" id="historyMessage"></div>
+                <div class="modal-actions-inline">
+                    <button class="button-secondary" id="refreshHistoryButton" type="button">Refresh</button>
+                    <button class="button" id="doneHistoryButton" type="button">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop hidden" id="bulkTaskModal" aria-hidden="true">
+        <div class="modal-card card" role="dialog" aria-modal="true" aria-labelledby="bulkTaskTitle">
+            <div class="modal-header">
+                <div>
+                    <h2 id="bulkTaskTitle">Bulk task</h2>
+                    <p>Review the targets, then pick one command to send to all of them.</p>
+                </div>
+                <button class="icon-button" id="closeBulkTaskButton" type="button">✕</button>
+            </div>
+
+            <div class="modal-layout">
+                <section class="modal-panel">
+                    <span class="selection-label">Selected agents</span>
+                    <div class="selection-count" id="bulkTargetCount">0 selected</div>
+                    <div class="selection-chips compact" id="bulkTargetChips"></div>
+                </section>
+
+                <section class="modal-panel modal-command-panel">
+                    <div>
+                        <label class="field-label" for="bulkCommand">Command</label>
+                        <select class="select" id="bulkCommand"></select>
+                    </div>
+                    <div id="bulkArgsContainer"></div>
+                </section>
+            </div>
+
+            <div class="modal-footer">
+                <div class="modal-message" id="bulkTaskMessage"></div>
+                <div class="modal-actions-inline">
+                    <button class="button-secondary" id="cancelBulkTaskButton" type="button">Cancel</button>
+                    <button class="button" id="submitBulkTaskButton" type="button">Send task</button>
+                    <!-- Label is rewritten to "Send task to N agents" on open, from
+                         the table selection. The static text is the zero fallback. -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop hidden" id="deleteAgentModal" aria-hidden="true">
+        <div class="modal-card card delete-card" role="dialog" aria-modal="true" aria-labelledby="deleteAgentTitle" aria-describedby="deleteWarning">
+            <div class="modal-header">
+                <div>
+                    <h2 id="deleteAgentTitle">Delete agent</h2>
+                    <p>This removes the management record only. It does not stop the implant.</p>
+                </div>
+                <button class="icon-button" id="closeDeleteAgentButton" type="button">✕</button>
+            </div>
+
+            <div class="delete-body">
+                <dl class="delete-target" id="deleteTargetDetails"></dl>
+            </div>
+
+            <div class="modal-footer">
+                <div class="modal-message" id="deleteAgentMessage"></div>
+                <div class="modal-actions-inline">
+                    <button class="button-secondary" id="cancelDeleteAgentButton" type="button">Cancel</button>
+                    <button class="button button-danger" id="confirmDeleteAgentButton" type="button">Delete agent</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

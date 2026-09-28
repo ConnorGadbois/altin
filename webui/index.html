@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Altin | Overview</title>
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <script defer src="/assets/js/app.js"></script>
+</head>
+<body class="app-page">
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="brand-block">
+                <div class="brand-name">Altin</div>
+                <div class="brand-subtitle">Management console</div>
+            </div>
+
+            <div class="sidebar-section">
+                <nav class="nav-list" aria-label="Primary">
+                    <a class="nav-item is-active" href="/index.html">
+                        <span>Overview</span>
+                    </a>
+                    <a class="nav-item" href="/agents.html">
+                        <span>Agents</span>
+                    </a>
+                    <a class="nav-item" href="/keys.html">
+                        <span>Keys</span>
+                    </a>
+                    <a class="nav-item" href="/users.html">
+                        <span>Users</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-info">
+                    <strong>Session</strong><br>
+                    <span id="serverChip">loading…</span>
+                </div>
+                <button class="button-secondary" id="themeToggle" type="button">Theme</button>
+                <button class="button" id="logoutButton" type="button">Logout</button>
+            </div>
+        </aside>
+
+        <main class="main-shell">
+            <header class="page-header">
+                <div>
+                    <div class="page-title">Overview</div>
+                    <div class="page-error" id="pageError" role="status" aria-live="polite"></div>
+                </div>
+            </header>
+
+            <section class="metric-grid" aria-label="Summary metrics">
+                <article class="metric-card">
+                    <div class="metric-label">Agents</div>
+                    <div class="metric-value" id="metricAgents">0</div>
+                    <!-- <div class="metric-note" id="metricAgentsNote">0 registered agents</div> -->
+                </article>
+                <article class="metric-card">
+                    <div class="metric-label">Active</div>
+                    <div class="metric-value" id="metricActive">0</div>
+                    <!-- <div class="metric-note" id="metricActiveNote">0 active agents</div> -->
+                </article>
+                <article class="metric-card">
+                    <div class="metric-label">Inactive</div>
+                    <div class="metric-value" id="metricInactive">0</div>
+                    <!-- <div class="metric-note" id="metricInactiveNote">0 inactive agents</div> -->
+                </article>
+                <article class="metric-card">
+                    <div class="metric-label">Total tasks</div>
+                    <div class="metric-value" id="metricTasks">0</div>
+                    <!-- <div class="metric-note" id="metricTasksNote">0 tasks in total</div> -->
+                </article>
+                <article class="metric-card">
+                    <div class="metric-label">Sent tasks</div>
+                    <div class="metric-value" id="metricSent">0</div>
+                    <!-- <div class="metric-note" id="metricSentNote">0 tasks already sent</div> -->
+                </article>
+                <article class="metric-card">
+                    <div class="metric-label">Completed tasks</div>
+                    <div class="metric-value" id="metricCompleted">0</div>
+                    <!-- <div class="metric-note" id="metricCompletedNote">0 tasks completed</div> -->
+                </article>
+            </section>
+
+            <section class="dashboard-grid">
+                <article class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Implant types</div>
+                            <div class="panel-subtitle" id="chartSubtitle">agents by implant type</div>
+                        </div>
+                        <span class="status-chip"><span id="chartTotal">0</span> agents</span>
+                    </div>
+                    <div class="chart-wrap">
+                        <div class="chart-box">
+                            <canvas id="chartCanvas"></canvas>
+                            <div class="chart-center">
+                                <strong id="chartTotalCenter">0</strong>
+                                <span>Total</span>
+                            </div>
+                        </div>
+                        <div class="legend-list" id="legendList"></div>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Operating systems</div>
+                            <div class="panel-subtitle" id="osChartSubtitle">agents by operating system</div>
+                        </div>
+                        <span class="status-chip"><span id="osChartTotal">0</span> agents</span>
+                    </div>
+                    <div class="chart-wrap">
+                        <div class="chart-box">
+                            <canvas id="osChartCanvas"></canvas>
+                            <div class="chart-center">
+                                <strong id="osChartTotalCenter">0</strong>
+                                <span>Total</span>
+                            </div>
+                        </div>
+                        <div class="legend-list" id="osLegendList"></div>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Recent agents</div>
+                            <div class="panel-subtitle">Most recent check-ins</div>
+                        </div>
+                    </div>
+                    <div class="recent-list" id="recentList"></div>
+                </article>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

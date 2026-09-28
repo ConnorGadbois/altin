@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Altin | Keys</title>
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <script defer src="/assets/js/keys.js"></script>
+</head>
+<body class="app-page">
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="brand-block">
+                <div class="brand-name">Altin</div>
+                <div class="brand-subtitle">Management console</div>
+            </div>
+            <div class="sidebar-section">
+                <nav class="nav-list" aria-label="Primary">
+                    <a class="nav-item" href="/index.html"><span>Overview</span></a>
+                    <a class="nav-item" href="/agents.html"><span>Agents</span></a>
+                    <a class="nav-item is-active" href="/keys.html"><span>Keys</span></a>
+                    <a class="nav-item" href="/users.html"><span>Users</span></a>
+                </nav>
+            </div>
+            <div class="sidebar-footer">
+                <div class="sidebar-info">
+                    <strong>Session</strong><br>
+                    <span id="serverChip">loading…</span>
+                </div>
+                <button class="button-secondary" id="themeToggle" type="button">Theme</button>
+                <button class="button" id="logoutButton" type="button">Logout</button>
+            </div>
+        </aside>
+
+        <main class="main-shell">
+            <header class="page-header page-header-spaced">
+                <div>
+                    <div class="page-title">Keys</div>
+                </div>
+                <div class="topbar-actions">
+                    <button class="button-secondary" id="refreshKeysButton" type="button">Refresh</button>
+                    <button class="button" id="createKeyButton" type="button">Create key</button>
+                </div>
+            </header>
+
+            <section class="page-section">
+                <section class="agents-toolbar panel">
+                    <div class="filter-grid keys-filter-grid">
+                        <div>
+                            <label class="field-label" for="keySearch">Search</label>
+                            <input class="input" id="keySearch" type="search" placeholder="Name, key ID, or key text">
+                        </div>
+                        <div class="selection-bar keys-summary">
+                            <div>
+                                <span class="selection-label">Keys</span>
+                                <div class="selection-count" id="keysCount">0 total</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel agents-table-panel">
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Key</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="keysTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal-backdrop hidden" id="keyModal" aria-hidden="true">
+        <div class="modal-card card" role="dialog" aria-modal="true" aria-labelledby="keyModalTitle">
+            <div class="modal-header">
+                <div>
+                    <h2 id="keyModalTitle">Create key</h2>
+                    <p>Create or replace a key.</p>
+                </div>
+                <button class="icon-button" id="closeKeyModalButton" type="button">✕</button>
+            </div>
+
+            <div class="modal-layout single-column">
+                <section class="modal-panel">
+                    <div>
+                        <label class="field-label" for="keyName">Name</label>
+                        <input class="input" id="keyName" type="text" placeholder="Key name">
+                    </div>
+                    <div>
+                        <label class="field-label" for="keyValue">Key</label>
+                        <input class="input" id="keyValue" type="text" placeholder="Key value">
+                    </div>
+                </section>
+            </div>
+
+            <div class="modal-footer">
+                <div class="modal-message" id="keyModalMessage"></div>
+                <div class="modal-actions-inline">
+                    <button class="button-secondary" id="cancelKeyModalButton" type="button">Cancel</button>
+                    <button class="button" id="saveKeyButton" type="button">Save key</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

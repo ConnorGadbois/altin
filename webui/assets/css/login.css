@@ -1,0 +1,126 @@
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.login-shell {
+    width: min(100%, 520px);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: stretch;
+}
+
+.login-panel {
+    border: 1px solid var(--border-main);
+    background: linear-gradient(180deg, var(--overlay-subtle), transparent), var(--bg-panel);
+    box-shadow: var(--shadow);
+}
+
+.login-copy {
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+.login-copy-compact {
+    margin-top: -0.25rem;
+}
+
+.login-panel {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-top: 3px solid var(--border-strong);
+}
+
+.login-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.login-card-logo {
+    color: var(--accent);
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.theme-toggle {
+    min-width: 44px;
+    padding-inline: 0.75rem;
+}
+
+.login-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.login-saved {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.login-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.login-option {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+}
+
+.login-option input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+}
+
+.login-message {
+    min-height: 1.4rem;
+    color: var(--text-muted);
+    font-size: 0.93rem;
+}
+
+.login-message[data-tone="success"] {
+    color: var(--success);
+}
+
+.login-message[data-tone="error"] {
+    color: var(--danger);
+}
+
+.login-preview {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-main);
+    color: var(--text-muted);
+    display: grid;
+    gap: 0.5rem;
+}
+
+.login-preview code {
+    padding: 0.2rem 0.4rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-muted);
+    color: var(--text-main);
+}
+
+@media (max-width: 940px) {
+    .login-shell {
+        grid-template-columns: 1fr;
+    }
+}

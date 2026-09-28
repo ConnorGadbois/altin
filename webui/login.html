@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Altin | Login</title>
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <script defer src="/assets/js/auth.js"></script>
+</head>
+<body class="login-page">
+    <main class="login-shell">
+        <section class="login-panel card" aria-label="Login form">
+            <div class="login-panel-header">
+                <div class="login-card-logo">Altin</div>
+                <button class="icon-button theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">☀️</button>
+            </div>
+
+            <p class="login-copy login-copy-compact">
+                Enter the management server URL and credentials.
+            </p>
+
+            <div class="login-saved hidden" id="savedServerWrap">
+                <label class="field-label" for="savedServer">Saved server</label>
+                <select class="select" id="savedServer"></select>
+            </div>
+
+            <form class="login-form" id="loginForm" autocomplete="on">
+                <div>
+                    <label class="field-label" for="serverUrl">Server URL</label>
+                    <input class="input" id="serverUrl" name="serverUrl" type="url" placeholder="http://127.0.0.1:5000" required>
+                </div>
+
+                <div>
+                    <label class="field-label" for="username">Username</label>
+                    <input class="input" id="username" name="username" type="text" placeholder="operator" autocomplete="username" required>
+                </div>
+
+                <div>
+                    <label class="field-label" for="password">Password</label>
+                    <input class="input" id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+                </div>
+
+                <div class="login-actions">
+                    <label class="login-option" for="rememberServer">
+                        <input id="rememberServer" type="checkbox">
+                        Save server after login
+                    </label>
+
+                    <button class="button" type="submit">Login</button>
+                </div>
+
+                <div class="login-message" id="loginMessage" role="status" aria-live="polite"></div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,1189 @@
+:root {
+    --panel-top: var(--accent);
+}
+
+.app-page {
+    min-height: 100vh;
+}
+
+.app-layout {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+}
+
+.sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding: .8rem;
+    border-right: 1px solid var(--border-main);
+    background:
+        linear-gradient(180deg, var(--overlay-subtle), transparent 30%),
+        var(--bg-panel);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.brand-block {
+    padding: 1rem;
+    border: 1px solid var(--border-main);
+    background:
+        linear-gradient(180deg, var(--overlay-accent), transparent 70%),
+        var(--bg-panel-2);
+}
+
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--border-strong);
+    color: var(--accent);
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+}
+
+.brand-name {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.brand-subtitle {
+    margin-top: 0.4rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.sidebar-section {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.sidebar-heading {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+}
+
+.nav-list {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.nav-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+    color: var(--text-main);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.82rem;
+}
+
+.nav-item.is-active {
+    border-color: var(--accent);
+    background: var(--bg-panel);
+    box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.nav-item .nav-accent {
+    color: var(--accent);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.sidebar-info {
+    padding: 0.9rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+    color: var(--text-muted);
+    line-height: 1.55;
+    font-size: 0.9rem;
+}
+
+.main-shell {
+    min-width: 0;
+    padding: 1.25rem 1.25rem 2rem;
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+    justify-content: stretch;
+}
+
+.page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.25rem 0.1rem 0;
+}
+
+.page-title {
+    font-size: 1.4rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.page-kicker {
+    margin-top: 0.35rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* Failures only. The element holds no text on a healthy load, and :empty collapses
+   it, so the page title gets no stray gap. Previously a wrapper div with a reserved
+   min-height sat here permanently, which is where the old status line lived. */
+.page-error {
+    margin-top: 0.45rem;
+    color: var(--danger);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.page-error:empty {
+    display: none;
+}
+
+.page-header-spaced {
+    align-items: center;
+}
+
+.compact-option {
+    justify-content: flex-start;
+    margin-top: 0.25rem;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.metric-card {
+    padding: 1.25rem 1.15rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.metric-label {
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.82rem;
+}
+
+.metric-value {
+    margin-top: 0.35rem;
+    font-size: clamp(2.4rem, 4vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1;
+}
+
+.metric-note {
+    margin-top: auto;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+.panel {
+    padding: 1rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel);
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.panel-title {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.panel-subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.chart-wrap {
+    display: grid;
+    grid-template-columns: minmax(240px, 260px) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: center;
+}
+
+.chart-box {
+    position: relative;
+    aspect-ratio: 1;
+    padding: 0.65rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+}
+
+.chart-box canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.chart-center {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+}
+
+.chart-center strong {
+    display: block;
+    font-size: 1.6rem;
+}
+
+.chart-center span {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.legend-list {
+    display: grid;
+    gap: 0.6rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+}
+
+.legend-key {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-width: 0;
+}
+
+.legend-swatch {
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--overlay-border);
+    flex: 0 0 auto;
+}
+
+.legend-name {
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.legend-count {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.recent-list {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.recent-item {
+    padding: 0.85rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+    display: grid;
+    gap: 0.35rem;
+}
+
+.recent-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.recent-strong {
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.recent-meta {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.recent-meta span {
+    padding: 0.2rem 0.45rem;
+    border: 1px solid var(--border-main);
+    background: var(--overlay-subtle);
+}
+
+.empty-state {
+    padding: 1rem;
+    border: 1px dashed var(--border-main);
+    color: var(--text-muted);
+    line-height: 1.6;
+    background: var(--overlay-subtle);
+}
+
+.agents-toolbar {
+    display: grid;
+    gap: 1rem;
+}
+
+.keys-filter-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 0.45fr);
+}
+
+.keys-summary {
+    min-height: 100%;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+}
+
+.selection-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+}
+
+.selection-label {
+    display: block;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+}
+
+.selection-count {
+    margin-top: 0.3rem;
+    font-size: 0.95rem;
+}
+
+/* Three actions now live here (select filtered, clear, bulk task), so the bar
+   allows wrapping instead of forcing them onto one overfull row. */
+.selection-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.selection-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 2.1rem;
+}
+
+.selection-chips.compact {
+    min-height: 1.5rem;
+}
+
+.selection-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.55rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+    color: var(--text-main);
+    font-size: 0.84rem;
+}
+
+.selection-chip button {
+    background: transparent;
+    color: var(--text-muted);
+    line-height: 1;
+}
+
+.table-wrap {
+    overflow: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 920px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 0.45rem 0.8rem;
+    border-bottom: 1px solid var(--border-main);
+    text-align: left;
+    vertical-align: top;
+}
+
+.data-table th {
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.74rem;
+    font-weight: 600;
+}
+
+.data-table tbody tr:hover {
+    background: var(--overlay-subtle);
+}
+
+.table-check {
+    width: 40px;
+}
+
+.agent-meta {
+    display: grid;
+    gap: 0.25rem;
+}
+
+.agent-ip {
+    font-weight: 700;
+}
+
+.agent-id,
+.agent-command-list,
+.agent-tags,
+.agent-checkin {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.agent-command-list,
+.agent-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.mini-chip {
+    padding: 0.2rem 0.45rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+    font-size: 0.8rem;
+    color: var(--text-main);
+}
+
+.mini-chip.muted {
+    color: var(--text-muted);
+}
+
+.row-checkbox {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+}
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: var(--overlay-modal);
+    backdrop-filter: blur(4px);
+    z-index: 20;
+}
+
+.modal-backdrop.is-open {
+    display: flex;
+}
+
+.modal-card {
+    width: min(100%, 920px);
+    max-height: min(92vh, 860px);
+    overflow: auto;
+    padding: 1rem;
+}
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.modal-header h2 {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.modal-header p,
+.modal-note,
+.modal-message {
+    color: var(--text-muted);
+    line-height: 1.55;
+}
+
+.modal-layout {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.modal-layout.single-column {
+    grid-template-columns: 1fr;
+}
+
+.modal-panel {
+    padding: 0.95rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+    display: grid;
+    gap: 0.85rem;
+}
+
+/* The dialog reuses .selection-label / .selection-count / .selection-chips so the
+   targets look identical to the selection bar above the table. The chips carry no
+   remove button - selection is the table's job, and a second editor here is what
+   let the dialog and the table disagree. They wrap rather than scroll, so with a
+   large selection the panel grows instead of hiding agents behind a scrollbar. */
+#bulkTargetChips {
+    margin-top: 0.5rem;
+    max-height: 14rem;
+    overflow-y: auto;
+}
+
+/* ------------------------------------------------------------------ *
+ * Delete-agent confirmation
+ * ------------------------------------------------------------------ */
+.delete-card {
+    max-width: 34rem;
+}
+
+/* The identity of the thing about to be destroyed, so there is no way to
+   confirm the wrong row. */
+.delete-target {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.35rem 1rem;
+    margin: 0;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.delete-target dt {
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    align-self: center;
+}
+
+.delete-target dd {
+    margin: 0;
+    color: var(--text-main);
+    overflow-wrap: anywhere;
+}
+
+.delete-warning {
+    margin-top: 0.85rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--danger);
+    background: color-mix(in srgb, var(--danger) 12%, transparent);
+    color: var(--text-main);
+    font-size: 0.86rem;
+    line-height: 1.55;
+}
+
+.button-danger {
+    background: var(--danger);
+    color: #fff;
+}
+
+.modal-command-panel {
+    align-content: start;
+}
+
+.modal-actions-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    align-items: center;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.modal-message {
+    min-height: 1.4rem;
+}
+
+.modal-message[data-tone="success"] {
+    color: var(--success);
+}
+
+.modal-message[data-tone="error"] {
+    color: var(--danger);
+}
+
+.table-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.table-actions .button,
+.table-actions .button-secondary,
+.table-actions .icon-button {
+    min-height: 36px;
+    padding: 0.45rem 0.75rem;
+}
+
+.key-mask,
+.user-chip,
+.admin-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+    font-size: 0.82rem;
+}
+
+.key-mask.revealed {
+    word-break: break-all;
+}
+
+.admin-chip {
+    color: var(--accent);
+}
+
+.arg-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.arg-item {
+    display: grid;
+    gap: 0.35rem;
+}
+
+.arg-help {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+/* Agent interaction console */
+/* The interaction console is a working surface, so it takes the room it can get
+   rather than sitting in a 1080px card with a fixed-height log. */
+#interactModal {
+    padding: 0.75rem;
+}
+
+.modal-card-wide {
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+}
+
+.console-status-bar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+    margin-bottom: 0.85rem;
+}
+
+.console-agent-chip {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.console-hint {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-left: auto;
+    text-align: right;
+}
+
+/* The base .modal-header / .modal-footer rules are shared with the other modals,
+   so the flex behaviour is scoped to the interact card instead of changed globally.
+   flex:0 0 auto keeps the chrome at its natural height and lets the log take the
+   slack; flex-shrink:0 stops the footer buttons being squashed on short viewports. */
+#interactModal .modal-header,
+#interactModal .modal-footer,
+#interactModal .console-status-bar,
+#interactModal .console-composer {
+    flex: 0 0 auto;
+}
+
+#interactModal .modal-header {
+    margin-bottom: 0.85rem;
+}
+
+#interactModal .modal-footer {
+    margin-top: 0.85rem;
+}
+
+#interactModal .modal-title-row {
+    min-width: 0;
+}
+
+/* flex:1 + min-height:0 is what lets the log actually absorb the spare height.
+   Without min-height:0 a flex child refuses to shrink below its content and the
+   card overflows instead of scrolling the log. */
+.console-log {
+    flex: 1 1 auto;
+    min-height: 140px;
+    overflow-y: auto;
+    padding: 0.75rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-main);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.console-entry {
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel);
+}
+
+.console-cmd {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    padding: 0.5rem 0.65rem;
+    border-bottom: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+}
+
+.console-prompt {
+    color: var(--accent);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.85rem;
+}
+
+.console-cmd-name {
+    font-weight: 700;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.9rem;
+}
+
+.console-cmd-args {
+    color: var(--text-main);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.88rem;
+    word-break: break-word;
+    min-width: 0;
+}
+
+.console-state {
+    margin-left: auto;
+    padding: 0.15rem 0.45rem;
+    border: 1px solid var(--border-main);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.console-state[data-state="done"] {
+    color: var(--success);
+    border-color: var(--success);
+}
+
+.console-state[data-state="timeout"],
+.console-state[data-state="error"] {
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+.console-state[data-state="sent"] {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.console-output {
+    margin: 0;
+    padding: 0.65rem 0.7rem;
+    color: var(--text-main);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 260px;
+    overflow: auto;
+}
+
+.console-output:empty {
+    display: none;
+}
+
+.console-note {
+    padding: 0.5rem 0.7rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    border-top: 1px dashed var(--border-main);
+}
+
+.console-composer {
+    flex: 0 0 auto;
+    margin-top: 0.85rem;
+    padding: 0.85rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel-2);
+    display: grid;
+    gap: 0.8rem;
+}
+
+.console-command-row {
+    display: grid;
+    grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+    gap: 0.85rem;
+    align-items: end;
+}
+
+.console-command-help {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    padding-bottom: 0.4rem;
+}
+
+tr[data-agent-id] {
+    cursor: pointer;
+}
+
+tr[data-agent-id]:hover {
+    background: var(--overlay-accent);
+}
+
+/* Target the button, not the cell. Styling the actions <td> painted the whole
+   cell - including its 1px bottom border - which is what made the row look
+   broken on hover. */
+tr[data-agent-id]:hover .agent-interact,
+tr[data-agent-id]:hover .agent-history,
+tr[data-agent-id]:hover .agent-delete {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #111;
+}
+
+/* Keyboard users tabbing to a row need to see where they are. */
+tr[data-agent-id]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+
+.table-hint {
+    margin: 0 0 0.85rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.table-hint strong {
+    color: var(--text-main);
+}
+
+/* The per-row actions cell. Renamed from .table-interact: the column holds two
+   different buttons now, so the old name no longer described it. */
+.table-actions-cell {
+    white-space: nowrap;
+    width: 1%;
+}
+
+/* Keep both actions on ONE line so every row stays a single height.
+   .table-actions defaults to flex-wrap:wrap, which lets this cell fall back to
+   its min-content width - one button - and stack the pair, doubling the row
+   height. nowrap makes the cell demand the sum of both buttons instead, and
+   .table-wrap (overflow:auto) turns any excess into a horizontal scrollbar
+   rather than clipped or overlapping content.
+   Deliberately NOT applied to .table-actions globally: the keys table puts four
+   buttons in one cell and should keep the freedom to wrap. */
+.table-actions-cell .table-actions {
+    flex-wrap: nowrap;
+}
+
+/* Belt and braces - with wrapping off, a squeezed cell would otherwise shrink
+   the buttons below their label width instead of widening the column. */
+.table-actions-cell .table-actions > * {
+    flex: 0 0 auto;
+}
+
+/* Sizing comes from the shared .table-actions rules, exactly as the keys/users
+   tables do - no local metric overrides, so it matches every other in-row button. */
+.agent-interact,
+.agent-history,
+.agent-delete {
+    white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ *
+ * Command history modal
+ *
+ * Same full-height working surface as the interact console: the header,
+ * toolbar and footer keep their natural height and the list absorbs the
+ * slack, so the modal fills the screen instead of scrolling the page.
+ * ------------------------------------------------------------------ */
+#historyModal {
+    padding: 0.75rem;
+}
+
+#historyModal .modal-header,
+#historyModal .modal-footer,
+#historyModal .history-toolbar {
+    flex: 0 0 auto;
+}
+
+#historyModal .modal-header {
+    margin-bottom: 0.85rem;
+}
+
+#historyModal .modal-footer {
+    margin-top: 0.85rem;
+}
+
+#historyModal .modal-title-row {
+    min-width: 0;
+}
+
+.history-toolbar {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 0.85rem;
+    flex-wrap: wrap;
+}
+
+.history-search {
+    flex: 1 1 18rem;
+    min-width: 0;
+}
+
+.history-summary {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    white-space: nowrap;
+    padding-bottom: 0.55rem;
+}
+
+/* flex:1 + min-height:0 lets the list absorb spare height and scroll
+   internally rather than letting the card overflow. */
+.history-list {
+    flex: 1 1 auto;
+    min-height: 140px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid var(--border-main);
+    background: var(--bg-main);
+}
+
+.history-entry {
+    border: 1px solid var(--border-main);
+    background: var(--bg-panel);
+}
+
+.history-entry-head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    background: var(--bg-panel-2);
+    border: 0;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.history-entry-head:hover {
+    background: var(--bg-muted);
+}
+
+.history-entry-head:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+
+/* The caret is decorative - the expanded state is announced by
+   aria-expanded on the button, so it is hidden from screen readers. */
+.history-caret {
+    flex: 0 0 auto;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    line-height: 1;
+    transition: transform 0.15s ease;
+}
+
+.history-entry-head[aria-expanded="true"] .history-caret {
+    transform: rotate(90deg);
+}
+
+.history-command {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.history-args {
+    color: var(--text-muted);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.82rem;
+    overflow-wrap: anywhere;
+}
+
+.history-time {
+    margin-left: auto;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+.history-body {
+    padding: 0.65rem 0.7rem;
+    border-top: 1px solid var(--border-main);
+}
+
+.history-body .console-output {
+    border: 1px solid var(--border-main);
+    background: var(--bg-main);
+}
+
+.history-pending {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-style: italic;
+    margin: 0;
+}
+
+@media (max-width: 1120px) {
+    .history-toolbar {
+        align-items: stretch;
+    }
+
+    .history-summary {
+        padding-bottom: 0;
+    }
+}
+
+@media (max-width: 1120px) {
+    .console-command-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1120px) {
+    .app-layout {
+        grid-template-columns: 220px minmax(0, 1fr);
+    }
+
+    .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-grid,
+    .modal-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 820px) {
+    .app-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: static;
+        height: auto;
+    }
+
+    .topbar {
+        flex-direction: column;
+    }
+
+    .chart-wrap {
+        grid-template-columns: 1fr;
+    }
+
+    .selection-bar,
+    .modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

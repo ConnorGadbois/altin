@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Altin | Users</title>
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <script defer src="/assets/js/users.js"></script>
+</head>
+<body class="app-page">
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="brand-block">
+                <div class="brand-name">Altin</div>
+                <div class="brand-subtitle">Management console</div>
+            </div>
+            <div class="sidebar-section">
+                <nav class="nav-list" aria-label="Primary">
+                    <a class="nav-item" href="/index.html"><span>Overview</span></a>
+                    <a class="nav-item" href="/agents.html"><span>Agents</span></a>
+                    <a class="nav-item" href="/keys.html"><span>Keys</span></a>
+                    <a class="nav-item is-active" href="/users.html"><span>Users</span></a>
+                </nav>
+            </div>
+            <div class="sidebar-footer">
+                <div class="sidebar-info">
+                    <strong>Session</strong><br>
+                    <span id="serverChip">loading…</span>
+                </div>
+                <button class="button-secondary" id="themeToggle" type="button">Theme</button>
+                <button class="button" id="logoutButton" type="button">Logout</button>
+            </div>
+        </aside>
+
+        <main class="main-shell">
+            <header class="page-header page-header-spaced">
+                <div>
+                    <div class="page-title">Users</div>
+                </div>
+                <div class="topbar-actions">
+                    <button class="button-secondary" id="refreshUsersButton" type="button">Refresh</button>
+                    <button class="button" id="createUserButton" type="button">Create user</button>
+                </div>
+            </header>
+
+            <section class="page-section">
+                <section class="agents-toolbar panel">
+                    <div class="filter-grid keys-filter-grid">
+                        <div>
+                            <label class="field-label" for="userSearch">Search</label>
+                            <input class="input" id="userSearch" type="search" placeholder="Username or user ID">
+                        </div>
+                        <div class="selection-bar keys-summary">
+                            <div>
+                                <span class="selection-label">Users</span>
+                                <div class="selection-count" id="usersCount">0 total</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel agents-table-panel">
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Admin</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </section>
+        </main>
+    </div>
+
+    <div class="modal-backdrop hidden" id="userModal" aria-hidden="true">
+        <div class="modal-card card" role="dialog" aria-modal="true" aria-labelledby="userModalTitle">
+            <div class="modal-header">
+                <div>
+                    <h2 id="userModalTitle">Create user</h2>
+                    <p>Create or update a user account.</p>
+                </div>
+                <button class="icon-button" id="closeUserModalButton" type="button">✕</button>
+            </div>
+
+            <div class="modal-layout single-column">
+                <section class="modal-panel">
+                    <div>
+                        <label class="field-label" for="userName">Username</label>
+                        <input class="input" id="userName" type="text" placeholder="operator">
+                    </div>
+                    <div>
+                        <label class="field-label" for="userPassword">Password</label>
+                        <input class="input" id="userPassword" type="password" placeholder="password">
+                    </div>
+                    <label class="login-option compact-option" for="userAdmin">
+                        <input id="userAdmin" type="checkbox">
+                        Admin
+                    </label>
+                </section>
+            </div>
+
+            <div class="modal-footer">
+                <div class="modal-message" id="userModalMessage"></div>
+                <div class="modal-actions-inline">
+                    <button class="button-secondary" id="cancelUserModalButton" type="button">Cancel</button>
+                    <button class="button" id="saveUserButton" type="button">Save user</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,817 @@
+openapi: 3.0.3
+info:
+  title: Altin Management API
+  version: 1.0.0
+  description: >
+    REST API for managing agents, tasks, keys, and users in the Altin framework.
+
+    Every endpoint requires an `Authorization` header containing the JWT returned by
+    `POST /api/login`, except for `POST /api/login` itself and the `/api/users`
+    endpoints, which are unauthenticated.
+servers:
+  - url: http://localhost:5000
+    description: Debug server
+security:
+  - BearerAuth: []
+components:
+  securitySchemes:
+    BearerAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: JWT token returned by `POST /api/login`, sent as the raw header value
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+    LoginResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        token:
+          type: string
+    Agent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        implant_id:
+          type: string
+        ip:
+          type: string
+        os:
+          type: string
+        commands:
+          type: array
+          items:
+            type: object
+        tags:
+          type: array
+          items:
+            type: string
+        last_checkin:
+          type: string
+          format: date-time
+    AgentsResponse:
+      type: object
+      properties:
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agent'
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        agent:
+          type: string
+          format: uuid
+        task:
+          type: string
+        args:
+          type: array
+          items:
+            type: string
+        sent:
+          type: boolean
+        completed:
+          type: boolean
+    TasksResponse:
+      type: object
+      properties:
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+    TaskResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        task:
+          type: string
+          format: uuid
+        result:
+          type: string
+          nullable: true
+        timestamp:
+          type: string
+          description: Timestamp formatted by the server as `YYYY-MM-DD HH:MM:SS.ffffff`
+          example: '2026-09-26 12:34:56.789012'
+    TaskResultsResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskResult'
+    Key:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        key:
+          type: string
+    KeysResponse:
+      type: object
+      properties:
+        keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/Key'
+    KeyRequest:
+      type: object
+      required:
+        - name
+        - key
+      properties:
+        name:
+          type: string
+        key:
+          type: string
+    KeyDeleteRequest:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        admin:
+          type: boolean
+    UsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    UserRequest:
+      type: object
+      required:
+        - username
+        - password
+        - admin
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+        admin:
+          type: boolean
+    UserPatchRequest:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        password:
+          type: string
+          format: password
+        admin:
+          type: boolean
+    TaskCreateRequest:
+      type: object
+      required:
+        - agent_id
+        - command
+        - args
+      properties:
+        agent_id:
+          type: string
+          format: uuid
+        command:
+          type: string
+        args:
+          type: array
+          items:
+            type: string
+    TagAgentRequest:
+      type: object
+      required:
+        - tags
+      description: Tags to add to the agent (POST) or remove from the agent (DELETE)
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+    UserDeleteRequest:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+paths:
+  /api/login:
+    post:
+      summary: User login
+      description: Authenticate a user and return a JWT token
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Invalid request - missing username or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid username or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/agents:
+    get:
+      summary: List all agents
+      description: >
+        Retrieve a list of all registered agents.
+
+        Note: the `ip`, `implant` and `os` filters are accepted but are not applied
+        to the returned list - the full agent list is always returned.
+      operationId: getAgents
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: ip
+          in: query
+          schema:
+            type: string
+          description: Filter agents by IP address (currently not applied)
+        - name: implant
+          in: query
+          schema:
+            type: string
+          description: Filter agents by implant ID (currently not applied)
+        - name: os
+          in: query
+          schema:
+            type: string
+          description: Filter agents by operating system (currently not applied)
+      responses:
+        '200':
+          description: List of agents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsResponse'
+        '401':
+          description: Unauthorized - missing, expired or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/agents/{agent_id}:
+    get:
+      summary: Get agent by ID
+      description: Retrieve details of a specific agent
+      operationId: getAgent
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Agent UUID
+      responses:
+        '200':
+          description: Agent details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+        '401':
+          description: Unauthorized - missing, expired or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete an agent
+      description: Delete a specific agent
+      operationId: deleteAgent
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Agent UUID
+      responses:
+        '204':
+          description: The agent was deleted
+        '401':
+          description: Unauthorized - missing, expired or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/agents/{agent_id}/tags:
+    post:
+      summary: Add tags to an agent
+      description: Append tags to an existing agent. Tags already present are ignored.
+      operationId: tagAgent
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Agent UUID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagAgentRequest'
+      responses:
+        '201':
+          description: Agent updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: Invalid request - missing tags or tags is not an array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - missing, expired or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Remove tags from an agent
+      description: >
+        Remove tags from an existing agent. Tags that are not present are ignored.
+
+        Note: the current implementation does not modify the stored tags - it
+        responds with 201 and the agent's tag list is left unchanged.
+      operationId: untagAgent
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Agent UUID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagAgentRequest'
+      responses:
+        '201':
+          description: Agent updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: Invalid request - missing tags or tags is not an array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - missing, expired or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/tasks:
+    get:
+      summary: List tasks
+      description: Retrieve tasks with optional filtering
+      operationId: getTasks
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by agent ID
+        - name: agent
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by agent ID (alias for id)
+        - name: sent
+          in: query
+          schema:
+            type: string
+            enum: ['true', 'false']
+          description: Filter by sent status
+        - name: completed
+          in: query
+          schema:
+            type: string
+            enum: ['true', 'false']
+          description: Filter by completed status
+      responses:
+        '200':
+          description: List of tasks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TasksResponse'
+        '400':
+          description: Invalid query parameter - sent or completed is not 'true' or 'false'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - missing, expired or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a new task
+      description: >
+        Create a task for a specific agent with a command and arguments. The number of
+        arguments must exactly match the number of required arguments declared by the
+        agent for that command.
+      operationId: createTask
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreateRequest'
+      responses:
+        '201':
+          description: Task sent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: Invalid request - missing body fields, or the command is not supported by the agent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - missing, expired or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Agent not found, or the number of supplied arguments does not match the required arguments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/task-results:
+    get:
+      summary: List task results
+      description: >
+        Retrieve task results with optional filtering.
+
+        Note: filtering by `task_id` only takes effect when the undocumented `agent`
+        query parameter is supplied as well; sending `task_id` on its own results in
+        a server error.
+      operationId: getTaskResults
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by result ID
+        - name: task_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by task ID (requires the `agent` query parameter)
+        - name: agent
+          in: query
+          schema:
+            type: string
+          description: >
+            Has no effect on its own; it must be supplied together with `task_id`
+            for the task ID filter to be applied
+      responses:
+        '200':
+          description: List of task results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResultsResponse'
+        '401':
+          description: Unauthorized - missing, expired or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error - `task_id` was supplied without the `agent` query parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/keys:
+    get:
+      summary: List all keys
+      description: Retrieve a list of all stored keys
+      operationId: getKeys
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of keys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeysResponse'
+        '401':
+          description: Unauthorized - missing, expired or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a new key
+      description: Store a new key with a name
+      operationId: createKey
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeyRequest'
+      responses:
+        '200':
+          description: A key with that name already exists - no key was created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '201':
+          description: Key created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: Invalid request - missing key or name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - missing, expired or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete a key
+      description: Delete a key by its ID
+      operationId: deleteKey
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeyDeleteRequest'
+      responses:
+        '204':
+          description: The key was deleted
+        '400':
+          description: Invalid request - missing id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - missing, expired or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Key not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/users:
+    get:
+      summary: List all users
+      description: Retrieve a list of all users (unauthenticated endpoint)
+      operationId: getUsers
+      security: []
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+    post:
+      summary: Create a new user
+      description: Register a new user account (unauthenticated endpoint)
+      operationId: createUser
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: Success - user created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: Invalid request - missing fields, or admin is not a boolean
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: A user with that username already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update a user
+      description: >
+        Update user details (username, password, or admin status) by ID
+        (unauthenticated endpoint).
+
+        Note: only one field is applied per request, in the order username, then
+        password, then admin - whichever comes first in the body.
+      operationId: editUser
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPatchRequest'
+      responses:
+        '200':
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '400':
+          description: Invalid request - missing id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Server error - currently returned whenever `admin` is supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete a user
+      description: Delete a user by ID (unauthenticated endpoint)
+      operationId: deleteUser
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDeleteRequest'
+      responses:
+        '204':
+          description: User deleted
+        '400':
+          description: Invalid request - missing id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'

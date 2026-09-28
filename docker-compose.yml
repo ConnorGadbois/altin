@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: altin
+      POSTGRES_PASSWORD: yLZi744l2vhTZbDvVFfKQxK8TgrefTCn # CHANGE ME
+      POSTGRES_DB: altin
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U altin -d altin"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  server:
+    build:
+      context: ./server
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ALTIN_PORT: 3000
+      ALTIN_DATABASE: postgres
+      ALTIN_PGSQL_DATABASE: altin
+      ALTIN_PGSQL_HOST: postgres
+      ALTIN_PGSQL_PORT: 5432
+      ALTIN_PGSQL_USER: altin
+      ALTIN_PGSQL_PASSWORD: yLZi744l2vhTZbDvVFfKQxK8TgrefTCn  # CHANGE ME (same as postgres' POSTGRES_PASSWORD)
+      ALTIN_JWT_SECRET: ctoV2G4E1XR8JOqd9VFiRMrbVWsXlAEg4E88_QcaRLDq41T0Rtx-OD3-FA5UDnrj  # CHANGE ME
+    ports:
+      - "5000:5000"
+
+  webui:
+    build:
+      context: ./webui
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+
+volumes:
+  postgres-data:
