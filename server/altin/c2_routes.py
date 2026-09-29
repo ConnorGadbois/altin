@@ -26,14 +26,9 @@ def c2_catchall(path: str):
     for key in Key.select():
         try:
             decrypted_data = xor_data(key.key, encrypted_data)
-        except:
-            continue
-
-        try:
             data = json.loads(decrypted_data)
         except:
-            # Invalid json
-            pass
+            continue
 
         found_key = True
         agent_key = str(key.key)
