@@ -32,7 +32,7 @@ services:
       ALTIN_PGSQL_PASSWORD: yLZi744l2vhTZbDvVFfKQxK8TgrefTCn  # CHANGE ME (same as postgres' POSTGRES_PASSWORD)
       ALTIN_JWT_SECRET: ctoV2G4E1XR8JOqd9VFiRMrbVWsXlAEg4E88_QcaRLDq41T0Rtx-OD3-FA5UDnrj  # CHANGE ME
     ports:
-      - "5000:5000"
+      - "3000:3000"
 
   webui:
     build:
