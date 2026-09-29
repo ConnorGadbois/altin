@@ -255,6 +255,7 @@ def delete_key():
 
 # Users
 @management_routes.route('/api/users', methods=['GET'])
+@login_required
 def get_users():
     users = []
     for user in User.select():
@@ -263,6 +264,7 @@ def get_users():
     return(jsonify({'users': users}), 200)
 
 @management_routes.route('/api/users', methods=['POST'])
+@login_required
 def create_user():
     if 'username' not in request.json or 'password' not in request.json or 'admin' not in request.json:
         return(jsonify({'message': 'Invalid request'}), 400)
@@ -282,6 +284,7 @@ def create_user():
     return(jsonify({'message': 'Success'}), 200)
 
 @management_routes.route('/api/users', methods=['PATCH'])
+@login_required
 def edit_user():
     if 'id' not in request.json:
         return(jsonify({'message': 'Invalid request'}), 400)
@@ -302,6 +305,7 @@ def edit_user():
     return(jsonify({'message': 'User updated'}), 200)
 
 @management_routes.route('/api/users', methods=['DELETE'])
+@login_required
 def delete_user():
     if 'id' not in request.json:
         return(jsonify({'message': 'Invalid request'}), 400)
