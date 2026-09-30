@@ -30,3 +30,4 @@ python3 -m http.server # Starts a webserver on port 8000
 |Implant|Description|Language|OS|
 |---|---|---|---|
 |`Tombili`|Competition focused implant with general purpose functionality|Nim|Windows, Linux| 
+|`Midas`|Windows trolling utilities|Rust|Windows
