@@ -8,7 +8,7 @@ Change the values in `src/config.nim` as needed.
 nim c -d:release -d:ssl -o:tombili.bin src/main.nim
 
 # If compiling for Windows from MacOS or Linux:
-nim c -d:release -d:ssl -o:tombili.exe src/main.nim
+nim c -d:release -d:mingw -d:ssl -o:tombili.exe src/main.nim
 ```
 
 ## Commands
