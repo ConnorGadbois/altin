@@ -69,9 +69,9 @@ def delete_agent(agent_id: str):
 
     for task in Task.select().where(Task.agent_id == agent.id):
         TaskResult.delete().where(TaskResult.task_id == task.id).execute()
-        task.delete().execute()
+        task.delete_instance().execute()
 
-    agent.delete().execute()
+    agent.delete_instance().execute()
 
 
     return(jsonify({'message': 'The agent was deleted'}), 204)
