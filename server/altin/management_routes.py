@@ -289,18 +289,42 @@ def edit_user():
     if 'id' not in request.json:
         return(jsonify({'message': 'Invalid request'}), 400)
 
-    if not User.select().where(User.id == request.json['id']).exists():
+    user = User.select().where(User.id == str(request.json['id'])).first()
+
+    if not user:
         return(jsonify({'message': 'No such user'}), 404)
 
+    updates = {}
+
     if 'username' in request.json:
-        User.update(username=request.json['username']).where(User.id==request.json['id']).execute()
-    elif 'password' in request.json:
-        User.update(password=request.json['password']).where(User.id==request.json['id']).execute()
-    elif 'admin' in request.json:
-        if admin not in [True, False]:
+        username = request.json['username']
+
+        if not isinstance(username, str) or not username:
             return(jsonify({'message': 'Invalid request'}), 400)
-        
-        User.update(admin=request.json['admin']).where(User.id==request.json['id']).execute()
+
+        if User.select().where((User.username == username) & (User.id != user.id)).exists():
+            return(jsonify({'message': 'A user with that username already exists'}), 403)
+
+        updates['username'] = username
+
+    if 'password' in request.json:
+        password = request.json['password']
+
+        if not isinstance(password, str) or not password:
+            return(jsonify({'message': 'Invalid request'}), 400)
+
+        updates['password'] = hashlib.sha512(password.encode('utf-8')).hexdigest()
+
+    if 'admin' in request.json:
+        if request.json['admin'] not in [True, False]:
+            return(jsonify({'message': 'Invalid request'}), 400)
+
+        updates['admin'] = request.json['admin']
+
+    if not updates:
+        return(jsonify({'message': 'Invalid request'}), 400)
+
+    User.update(**updates).where(User.id == user.id).execute()
 
     return(jsonify({'message': 'User updated'}), 200)
 
